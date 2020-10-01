@@ -1,0 +1,77 @@
+type Query {
+    pairs(first: Int, orderBy: String, orderDirection: String): [Pair!]!
+}
+
+query UniswapPairTop100Query {
+    pairs(first: 100, orderBy: reserveETH, orderDirection: desc) {
+        id
+        reserveUSD
+        token0 {
+            id
+        }
+        token1 {
+            id
+        }
+        reserve0
+        reserve1
+        token0Price
+        token1Price
+    }
+}
+
+type Pair {
+    id: ID!
+    token0: Token!
+    token1: Token!
+    reserve0: BigDecimal!
+    reserve1: BigDecimal!
+    totalSupply: BigDecimal!
+    reserveETH: BigDecimal!
+    reserveUSD: BigDecimal!
+    trackedReserveETH: BigDecimal!
+    token0Price: BigDecimal!
+    token1Price: BigDecimal!
+    volumeToken0: BigDecimal!
+    volumeToken1: BigDecimal!
+    volumeUSD: BigDecimal!
+    untrackedVolumeUSD: BigDecimal!
+    txCount: BigInt!
+    createdAtTimestamp: BigInt!
+    createdAtBlockNumber: BigInt!
+    liquidityProviderCount: BigInt!
+}
+
+type Token {
+    id: ID!
+    symbol: String!
+    name: String!
+    decimals: BigInt!
+    totalSupply: BigInt!
+    tradeVolume: BigDecimal!
+    tradeVolumeUSD: BigDecimal!
+    untrackedVolumeUSD: BigDecimal!
+    txCount: BigInt!
+    totalLiquidity: BigDecimal!
+    derivedETH: BigDecimal
+    mostLiquidPairs: [PairDayData]!
+}
+
+type PairDayData {
+    id: ID!
+    date: Int!
+    pairAddress: Bytes!
+    token0: Token!
+    token1: Token!
+    reserve0: BigDecimal!
+    reserve1: BigDecimal!
+    totalSupply: BigDecimal!
+    reserveUSD: BigDecimal!
+    dailyVolumeToken0: BigDecimal!
+    dailyVolumeToken1: BigDecimal!
+    dailyVolumeUSD: BigDecimal!
+    dailyTxns: BigInt!
+}
+
+scalar Bytes
+scalar BigInt
+scalar BigDecimal
