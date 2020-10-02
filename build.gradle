@@ -20,6 +20,8 @@ dependencies {
     implementation 'io.quarkus:quarkus-kotlin'
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
 
+    implementation 'io.quarkus:quarkus-picocli'
+
     implementation("com.expediagroup:graphql-kotlin-ktor-client:$graphqlKotlin")
 
     testImplementation 'io.quarkus:quarkus-junit5'
@@ -60,10 +62,12 @@ test {
     systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
 }
 
-graphql {
-    client {
-        endpoint = "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2"
-        packageName = "com.mario.uniswap"
-        clientType = GraphQLClientType.KTOR
-    }
+tasks.getByName("graphqlIntrospectSchema") {
+    endpoint.set("https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2")
+}
+tasks.getByName("graphqlGenerateClient") {
+    packageName.set("com.mario.uniswap")
+    clientType.set(com.expediagroup.graphql.plugin.generator.GraphQLClientType.KTOR)
+    schemaFile.set(graphqlIntrospectSchema.outputFile)
+    dependsOn("graphqlIntrospectSchema")
 }

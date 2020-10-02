@@ -1,3 +1,9 @@
 package com.mario
 
-class Main
+class Main {
+
+
+    fun main() {
+    }
+
+}
